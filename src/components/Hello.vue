@@ -2,8 +2,8 @@
   <div>
     <div class="box b33">
       <div style="text-align: center">
-        <img src="../assets/logo.png" v-if='state === "stop"'>
-        <div v-else class="last-cont">
+        <h1 v-if='state === "stop"'>BINGO</h1>
+        <div class="last-cont">
           <div v-show='state==="play" && !last'>
             <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              width="200px" height="200px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
@@ -22,27 +22,27 @@
               </path>
             </svg>
           </div>
-          <div v-show='state==="play" && last' class="last">{{ last }}</div>
-          <div v-show='state==="pause"' class="last">
+          <div v-show='state!=="stop" && last' class="last">{{ last }}</div>
+          <div v-show='state==="pause"'>
             <i class="fa fa-pause" aria-hidden="true"></i>
           </div>
         </div>
         <div>
-          <h1>
+          <!-- <h1>
             Pizza Party & Bingo
             <small>Primeras A de Hockey Sobre Cesped - Club Gimnasia y Esgrima de Buenos Aires</small>
-          </h1>
+          </h1> -->
         </div>
       </div>
       <nav>
-        <button @click.prevent='play' class="play" :disabled="state==='play'"> <i class="fa fa-play" aria-hidden="true"></i> </button>
-        <button @click.prevent='pause' :disabled="state==='pause'"> <i class="fa fa-pause" aria-hidden="true"></i> </button>
-        <button @click.prevent='stop' class="stop" :disabled="state==='stop'"> <i class="fa fa-stop" aria-hidden="true"></i> </button>
+        <button @click.prevent='play' class="play" :disabled="state==='play'"> Comenzar </button>
+        <button @click.prevent='pause' :disabled="state==='pause'"> Pausa </button>
+        <button @click.prevent='stop' class="stop" :disabled="state==='stop'"> Reiniciar </button>
       </nav>
     </div>
     <div class="box b66">
       <ul>
-        <li v-for='n in numbers' :class='{ used: used.indexOf(n) !== -1 }'> {{ n }} </li>
+        <li v-for='n in numbers' :key="n" :class='{ used: used.indexOf(n) !== -1 }'> {{ n }} </li>
       </ul>
     </div>
   </div>
@@ -87,9 +87,9 @@ export default {
 
       const getRandomInt = (min, max) => Math.floor(Math.random() * ((max - min) + 1)) + min;
       const selectNumber = () => {
-        let n = getRandomInt(0, 99);
+        let n = getRandomInt(1, 90);
 
-        while (this.used.indexOf(n) !== -1) { n = getRandomInt(0, 99); }
+        while (this.used.indexOf(n) !== -1) { n = getRandomInt(1, 90); }
 
         this.last = n;
         this.used.push(n);
@@ -102,22 +102,25 @@ export default {
           this.state = 'done';
           clearInterval(game);
         }
-      }, 5000);
+      }, 10000);
     }
   },
 
   mounted() {
-    for (let i = 0; i <= 99; i += 1) {
+    for (let i = 1; i <= 90; i += 1) {
       this.numbers.push(i);
     }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1, h2 {
   font-weight: normal;
+}
+
+h1 {
+  font-size: 120px;
 }
 
 ul {
@@ -127,15 +130,15 @@ ul {
 
 li {
   display: inline-block;
-  margin: 10px 10px;
+  margin: 5px 5px;
 }
 
 li {
   border: 2px solid tomato;
   border-radius: 50%;
   padding: 20px;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   line-height: 50px;
   text-align: center;
   color: steelblue;
